@@ -15,8 +15,8 @@ export const useCourseStore = defineStore('courseStore', () => {
         courses.value.push(newCourse);
     }
 
-    async function editCourse(updatedCourse: Course) {
-        await updateCourse(updatedCourse);
+    async function editCourse(id: string, updatedCourse: Course) {
+        await updateCourse(id, updatedCourse);
         const index = courses.value.findIndex(c => c.code === updatedCourse.code);
         if (index !== -1) {
             courses.value[index] = updatedCourse;

@@ -3,20 +3,25 @@ import type { Course } from '@/types/course';
 
 const API_URL = 'http://localhost:3000/admin/courses';
 
+// Fetch all courses
 export async function fetchCourses(): Promise<Course[]> {
   const { data } = await axios.get(API_URL);
   return data;
 }
 
+// Create a new course
 export async function createCourse(course: Course): Promise<Course> {
   const { data } = await axios.post(API_URL, course);
   return data;
 }
 
-export async function updateCourse(course: Course): Promise<void> {
-  await axios.put(`${API_URL}/${course.code}`, course);
+// Edit (partially update) a course
+export async function updateCourse(id: string, updatedData: Partial<Course>): Promise<Course> {
+  const { data } = await axios.patch(`${API_URL}/${id}`, updatedData);
+  return data;
 }
 
-export async function deleteCourse(courseCode: string): Promise<void> {
-  await axios.delete(`${API_URL}/${courseCode}`);
+// Delete a course
+export async function deleteCourse(id: string): Promise<void> {
+  await axios.delete(`${API_URL}/${id}`);
 }

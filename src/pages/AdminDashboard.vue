@@ -1,4 +1,3 @@
-<!-- AdminDashboard.vue -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useCourseStore } from '@/store/courses';

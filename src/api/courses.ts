@@ -5,6 +5,7 @@ const API_URL = 'http://localhost:3000/admin/courses';
 
 // Fetch all courses
 export async function fetchCourses(): Promise<Course[]> {
+  console.log('fetchCourses');
   const { data } = await axios.get(API_URL);
   return data;
 }

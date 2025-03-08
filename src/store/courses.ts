@@ -7,10 +7,12 @@ export const useCourseStore = defineStore('courseStore', () => {
     const courses = ref<Course[]>([]);
 
     async function loadCourses() {
+        console.log('loadCourses');
         courses.value = await fetchCourses();
     }
 
     async function addCourse(course: Course) {
+        console.log('addCourse() called');
         const newCourse = await createCourse(course);
         courses.value.push(newCourse);
     }

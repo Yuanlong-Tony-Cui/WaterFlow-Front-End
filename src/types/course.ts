@@ -3,6 +3,12 @@ export interface Timeslot {
     startTime: string;
     endTime: string;
 }
+
+export interface MakeupLecture {
+    date: string;  // stored as "YYYY-MM-DD"
+    startTime: string; // "10:00 AM" or "14:30"
+    endTime: string;   // "12:00 PM" or "16:00"
+}
   
 export interface Course {
     code: string;
@@ -15,5 +21,7 @@ export interface Course {
     description?: string;
     schedule: Timeslot[];
     registeredStudents?: string[];
+    makeupLectures?: MakeupLecture[];
+    noClassDates?: string[];
 }
   

@@ -1,0 +1,108 @@
+<!-- StudentDashboard.vue -->
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useCourseStore } from '@/store/courses';
+import CourseCard from '@/components/CourseCard.vue';
+import WeeklySchedule from '@/components/WeeklySchedule.vue';
+import type { Course } from '@/types/course';
+
+const store = useCourseStore();
+const searchQuery = ref('');
+const registeredCourses = ref<Course[]>([]);
+const studentId = ref('student-123'); // mocked student ID
+const showRegisterConfirm = ref(false);
+const courseToRegister = ref<string | null>(null);
+
+onMounted(async () => {
+  try {
+    await store.loadCourses();
+    fetchRegisteredCourses();
+  } catch (error) {
+    console.error("Error loading courses:", error);
+  }
+});
+
+const filteredCourses = () => {
+  return store.courses.filter(course =>
+    course.code.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+    course.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+    course.instructors?.some(instr => instr.toLowerCase().includes(searchQuery.value.toLowerCase())) ||
+    course.description?.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+};
+
+const fetchRegisteredCourses = () => {
+  registeredCourses.value = store.courses.filter(course =>
+    course.registeredStudents?.includes(studentId.value) ?? false
+  );
+};
+
+const confirmRegisterCourse = (courseId: string) => {
+  courseToRegister.value = courseId;
+  showRegisterConfirm.value = true;
+};
+
+const registerForCourse = async () => {
+  if (courseToRegister.value) {
+    try {
+      await store.registerForCourse(courseToRegister.value, studentId.value);
+      await store.loadCourses();
+      fetchRegisteredCourses();
+    } catch (error) {
+      console.error("Error registering for course:", error);
+    }
+  }
+  showRegisterConfirm.value = false;
+  courseToRegister.value = null;
+};
+
+const withdrawFromCourse = async (courseId: string) => {
+  try {
+    await store.withdrawFromCourse(courseId, studentId.value);
+    await store.loadCourses();
+    fetchRegisteredCourses();
+  } catch (error) {
+    console.error("Error withdrawing from course:", error);
+  }
+};
+</script>
+
+<template>
+  <div>
+    <h1 class="text-2xl font-semibold mb-4">Student Dashboard</h1>
+    <div class="flex justify-between mb-4">
+      <input 
+        v-model="searchQuery" 
+        placeholder="Search courses..." 
+        class="w-full p-2 border border-gray-300 rounded-lg"
+      />
+    </div>
+
+    <h2 class="text-xl font-semibold mb-2">Available Courses</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <CourseCard v-for="course in filteredCourses()" :key="course.code" :course="course" @register="confirmRegisterCourse" />
+    </div>
+
+    <h2 class="text-xl font-semibold mt-6 mb-2">My Registered Courses</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <CourseCard v-for="course in registeredCourses" :key="course.code" :course="course" @withdraw="withdrawFromCourse" />
+    </div>
+    
+    <h2 class="text-xl font-semibold mt-6 mb-2">Weekly Schedule</h2>
+    <WeeklySchedule :courses="registeredCourses" />
+  </div>
+
+  <!-- Register Confirmation Modal -->
+  <Teleport to="body">
+    <div v-if="showRegisterConfirm" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 z-50">
+      <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-lg font-semibold">Confirm Registration</h2>
+        <p class="mt-2">Are you sure you want to register for this course?</p>
+        <div class="flex justify-end gap-4 mt-4">
+          <button @click="showRegisterConfirm = false" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>
+          <button @click="registerForCourse" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Register</button>
+        </div>
+      </div>
+    </div>
+  </Teleport>
+</template>

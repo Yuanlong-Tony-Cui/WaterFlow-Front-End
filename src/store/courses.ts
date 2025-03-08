@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { fetchCourses, createCourse, updateCourse, deleteCourse } from '@/api/courses';
+import { fetchCourses, createCourse, updateCourse, deleteCourse, registerCourse, withdrawCourse } from '@/api/courses';
 import type { Course } from '@/types/course';
 
 export const useCourseStore = defineStore('courseStore', () => {
@@ -30,7 +30,25 @@ export const useCourseStore = defineStore('courseStore', () => {
         courses.value = courses.value.filter(c => c.code !== courseCode);
     }
 
+    async function registerForCourse(courseId: string, studentId: string) {
+        console.log(`Registering student ${studentId} for course ${courseId}`);
+        await registerCourse(courseId, studentId);
+        await loadCourses(); // refreshes course list
+    }
+
+    async function withdrawFromCourse(courseId: string, studentId: string) {
+        console.log(`Withdrawing student ${studentId} from course ${courseId}`);
+        await withdrawCourse(courseId, studentId);
+        await loadCourses(); // refreshes course list
+    }
+
     return {
-        courses, loadCourses, addCourse, editCourse, removeCourse
+        courses,
+        loadCourses,
+        addCourse,
+        editCourse,
+        removeCourse,
+        registerForCourse,
+        withdrawFromCourse,
     };
 });

@@ -8,18 +8,16 @@ const menuItems = [
 </script>
 
 <template>
-  <div class="w-64 bg-green-600 text-white h-full p-4">
-    <h2 class="text-lg font-semibold mb-6">Admin Panel</h2>
-    <nav>
-      <ul>
-        <li v-for="item in menuItems" :key="item.name" class="mb-2">
-          <router-link :to="item.route" class="flex items-center p-3 rounded hover:bg-green-700">
-            <component :is="item.icon" class="w-5 h-5 mr-2" />
-            {{ item.name }}
-          </router-link>
-        </li>
-      </ul>
-    </nav>
+  <div class="h-screen w-64 bg-gray-800 text-white p-4 fixed">
+    <h1 class="text-lg font-semibold mb-4">Course System</h1>
+    <ul>
+      <li class="mb-2">
+        <router-link to="/admin" class="block p-2 rounded hover:bg-gray-700">Admin Dashboard</router-link>
+      </li>
+      <li>
+        <router-link to="/student" class="block p-2 rounded hover:bg-gray-700">Student Dashboard</router-link>
+      </li>
+    </ul>
   </div>
 </template>
 

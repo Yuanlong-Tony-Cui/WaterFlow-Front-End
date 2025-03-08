@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { Course } from '@/types/course';
+import { defineProps, defineEmits } from 'vue';
 
 defineProps<{ course: Course }>();
-const emit = defineEmits(["edit"]);
+const emit = defineEmits(["edit", "delete", "register", "withdraw"]);
 </script>
 
 <template>
@@ -11,19 +12,26 @@ const emit = defineEmits(["edit"]);
     <p class="text-gray-600 font-medium">{{ course.code }}</p>
     <p class="text-sm text-gray-500">Instructor(s): {{ course.instructors?.join(', ') }}</p>
     <p class="text-gray-700 mt-2">{{ course.description }}</p>
-    
+
     <div class="flex justify-between mt-4">
-      <button 
-        class="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700"
-        @click="emit('edit', course)"
-      >
+      <!-- Admin Actions -->
+      <button v-if="$route.path.includes('admin')" class="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700" @click="emit('edit', course)">
         Edit
       </button>
-      <button 
-        class="bg-red-600 text-white py-1 px-3 rounded hover:bg-red-700"
-        @click="$emit('delete', course.code)"
-      >
+      <button v-if="$route.path.includes('admin')" class="bg-red-600 text-white py-1 px-3 rounded hover:bg-red-700" @click="emit('delete', course.code)">
         Delete
+      </button>
+
+      <!-- Student Actions -->
+      <button v-if="$route.path.includes('student') && !course.registeredStudents.includes('student123')"
+        class="bg-green-600 text-white py-1 px-3 rounded hover:bg-green-700"
+        @click="emit('register', course.code)">
+        Register
+      </button>
+      <button v-if="$route.path.includes('student') && course.registeredStudents.includes('student123')"
+        class="bg-red-600 text-white py-1 px-3 rounded hover:bg-red-700"
+        @click="emit('withdraw', course.code)">
+        Withdraw
       </button>
     </div>
   </div>

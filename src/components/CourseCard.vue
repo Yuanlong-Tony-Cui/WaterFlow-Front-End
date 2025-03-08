@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Course } from '@/types/course';
-import { defineProps, defineEmits } from 'vue';
 
 defineProps<{ course: Course }>();
 const emit = defineEmits(["edit"]);
@@ -18,13 +17,13 @@ const emit = defineEmits(["edit"]);
         class="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700"
         @click="emit('edit', course)"
       >
-        ✏️ Edit
+        Edit
       </button>
       <button 
         class="bg-red-600 text-white py-1 px-3 rounded hover:bg-red-700"
         @click="$emit('delete', course.code)"
       >
-        🗑 Delete
+        Delete
       </button>
     </div>
   </div>

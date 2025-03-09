@@ -30,7 +30,7 @@ const filteredCourses = () => {
     (
       course.code.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       course.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      course.instructors?.some(instr => instr.toLowerCase().includes(searchQuery.value.toLowerCase())) ||
+      course.instructor.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       course.description?.toLowerCase().includes(searchQuery.value.toLowerCase())
     )
   );

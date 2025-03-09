@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { User } from '@/types/user';
+import type { Course } from '@/types/course';
 
 const API_URL = 'http://localhost:3000/student';
 

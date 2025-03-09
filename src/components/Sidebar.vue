@@ -9,7 +9,8 @@ const menuItems = [
 
 <template>
   <div class="h-screen w-64 bg-gray-800 text-white p-4 fixed">
-    <h1 class="text-lg font-semibold mb-4">Course System</h1>
+    <h1 class="text-lg font-semibold mb-4">WaterFlow</h1>
+    <h1 class="mb-4">Course Registration System</h1>
     <ul>
       <li class="mb-2">
         <router-link to="/admin" class="block p-2 rounded hover:bg-gray-700">Admin Dashboard</router-link>

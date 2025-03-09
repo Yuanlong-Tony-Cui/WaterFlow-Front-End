@@ -25,7 +25,7 @@ const filteredCourses = () => {
   return store.courses.filter(course =>
     course.code.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
     course.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-    course.instructors?.some(instr => instr.toLowerCase().includes(searchQuery.value.toLowerCase())) ||
+    course.instructor.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
     course.description?.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 };
@@ -36,10 +36,16 @@ const formatDate = (dateStr?: string) => {
 };
 
 const editCourse = (course: Course) => {
+  console.log("editCourse() Editing course:", course);
   selectedCourse.value = {
     ...course,
     startDate: formatDate(course.startDate),
     endDate: formatDate(course.endDate),
+    makeupLectures: course.makeupLectures?.map(lecture => ({
+      ...lecture,
+      date: formatDate(lecture.date)
+    })),
+    noClassDates: course.noClassDates?.map(formatDate)
   };
   showForm.value = true; // Open modal
 };
@@ -50,7 +56,7 @@ const addCourse = () => {
     code: '',
     name: '',
     description: '',
-    instructors: [],
+    instructor: '',
     location: '',
     startDate: '',
     endDate: '',
@@ -68,7 +74,7 @@ const closeForm = () => {
 
 const saveCourse = async (updatedCourse: Course) => {
   try {
-    await store.editCourse(updatedCourse.code, updatedCourse);
+    await store.editCourse(updatedCourse._id, updatedCourse);
     await store.loadCourses(); // Reload courses after update
   } catch (error) {
     console.error("Error updating course:", error);

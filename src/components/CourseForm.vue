@@ -11,7 +11,7 @@ const defaultCourse: Course = {
   code: '',
   name: '',
   description: '',
-  instructors: [],
+  instructor: '',
   location: '',
   startDate: '',
   endDate: '',
@@ -85,8 +85,8 @@ const addSchedule = () => {
           </div>
 
           <div>
-            <label class="block font-medium text-green-700">Instructors:</label>
-            <input v-model="form.instructors" class="w-full p-2 border border-green-300 rounded-lg" />
+            <label class="block font-medium text-green-700">Instructor:</label>
+            <input v-model="form.instructor" class="w-full p-2 border border-green-300 rounded-lg" />
           </div>
 
           <div>

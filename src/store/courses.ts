@@ -19,15 +19,15 @@ export const useCourseStore = defineStore('courseStore', () => {
 
     async function editCourse(id: string, updatedCourse: Course) {
         await updateCourse(id, updatedCourse);
-        const index = courses.value.findIndex(c => c.code === updatedCourse.code);
+        const index = courses.value.findIndex(c => c._id === updatedCourse._id);
         if (index !== -1) {
             courses.value[index] = updatedCourse;
         }
     }
 
-    async function removeCourse(courseCode: string) {
-        await deleteCourse(courseCode);
-        courses.value = courses.value.filter(c => c.code !== courseCode);
+    async function removeCourse(courseId: string) {
+        await deleteCourse(courseId);
+        courses.value = courses.value.filter(c => c._id !== courseId);
     }
 
     async function registerForCourse(courseId: string, studentId: string) {

@@ -18,7 +18,7 @@ export interface Course {
     startDate: string;
     endDate: string;
     capacity: number;
-    instructors?: string[];
+    instructor: string;
     description?: string;
     schedule: Timeslot[];
     registeredStudents?: string[];

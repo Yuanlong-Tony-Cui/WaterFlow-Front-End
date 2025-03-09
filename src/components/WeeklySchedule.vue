@@ -6,6 +6,15 @@ const props = defineProps<{ courses: Course[] }>();
 const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const selectedWeek = ref<string>("2024-09-09"); // default week of interest
 
+// Define 6 distinct colours
+const courseColours = ["bg-blue-200", "bg-green-200", "bg-yellow-200", "bg-purple-200", "bg-pink-200", "bg-orange-200"];
+
+// Function to get a color index for a course (hashing _id)
+const getCourseColour = (courseId: string) => {
+  const hash = [...courseId].reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return courseColours[hash % courseColours.length]; // Map to one of the 6 colors
+};
+
 // Filter courses that are active in the selected week
 const filteredCourses = computed(() => {
   return props.courses.filter(course => {
@@ -18,7 +27,7 @@ const filteredCourses = computed(() => {
 
 // Group courses by day
 const schedule = computed(() => {
-  const result: Record<string, { name: string; startTime: string; endTime: string }[]> = {};
+  const result: Record<string, { name: string; startTime: string; endTime: string; colour: string }[]> = {};
   daysOfWeek.forEach(day => (result[day] = []));
 
   filteredCourses.value.forEach(course => {
@@ -28,6 +37,7 @@ const schedule = computed(() => {
           name: course.name,
           startTime: session.startTime,
           endTime: session.endTime,
+          colour: getCourseColour(course._id), // Assign color dynamically
         });
       }
     });

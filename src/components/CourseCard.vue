@@ -28,11 +28,14 @@ const isRegistered = computed(() => userStore.registeredCourses.some(c => c._id 
 
       <!-- Student Actions -->
       <button v-if="$route.path.includes('student')"
-        :disabled="isRegistered"
+        :disabled="isRegistered || (course.registeredStudents && course.registeredStudents.length >= course.capacity)"
         class="py-1 px-3 rounded text-white transition-colors"
-        :class="isRegistered ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'"
+        :class="{
+          'bg-gray-400 cursor-not-allowed': isRegistered || (course.registeredStudents && course.registeredStudents.length >= course.capacity),
+          'bg-green-600 hover:bg-green-700': !isRegistered && (course.registeredStudents && course.registeredStudents.length < course.capacity)
+        }"
         @click="emit('register', course._id)"
-        :title="isRegistered ? 'Already registered for this course' : ''">
+        :title="isRegistered ? 'Already registered for this course' : (course.registeredStudents && course.registeredStudents.length >= course.capacity ? 'Class is full' : '')">
         Register
       </button>
 

@@ -11,6 +11,7 @@ export interface MakeupLecture {
 }
   
 export interface Course {
+    _id: string;
     code: string;
     name: string;
     location?: string;

@@ -46,6 +46,7 @@ const editCourse = (course: Course) => {
 
 const addCourse = () => {
   selectedCourse.value = {
+    _id: '',
     code: '',
     name: '',
     description: '',

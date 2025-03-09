@@ -7,6 +7,7 @@ const props = defineProps<{ course: Course | null }>();
 
 // Default course structure to prevent null errors
 const defaultCourse: Course = {
+  _id: '',
   code: '',
   name: '',
   description: '',

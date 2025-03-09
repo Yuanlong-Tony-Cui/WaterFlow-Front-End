@@ -12,10 +12,10 @@ const isRegistered = computed(() => userStore.registeredCourses.some(c => c._id 
 
 <template>
   <div class="bg-white shadow-lg rounded-lg p-4 border border-gray-200">
-    <h2 class="text-lg font-semibold text-blue-800">{{ course.name }}</h2>
+    <h2 class="text-lg font-semibold text-blue-900">{{ course.name }}</h2>
     <p class="text-gray-600 font-medium">{{ course.code }}</p>
     <p class="text-sm text-gray-500">Instructor: {{ course.instructor }}</p>
-    <p class="text-gray-700 mt-2">{{ course.description }}</p>
+    <p class="text-sm text-gray-700 mt-2 h-20 overflow-y-auto">{{ course.description }}</p>
 
     <div class="flex justify-between mt-4">
       <!-- Admin Actions -->

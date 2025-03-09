@@ -1,4 +1,3 @@
-<!-- StudentDashboard.vue -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useCourseStore } from '@/store/courses';
@@ -14,6 +13,9 @@ const showRegisterConfirm = ref(false);
 const courseToRegister = ref<string | null>(null);
 const showConflictWarning = ref(false);
 const conflictingCourses = ref<Course[]>([]);
+
+const showWithdrawConfirm = ref(false);
+const courseToWithdraw = ref<string | null>(null);
 
 onMounted(async () => {
   try {
@@ -62,14 +64,23 @@ const registerForCourse = async () => {
   courseToRegister.value = null;
 };
 
-const withdrawFromCourse = async (courseId: string) => {
-  try {
-    await userStore.withdraw(courseId);
-    await store.loadCourses();
-    await userStore.loadRegisteredCourses();
-  } catch (error) {
-    console.error("Error withdrawing from course:", error);
+const confirmWithdrawCourse = (courseId: string) => {
+  courseToWithdraw.value = courseId;
+  showWithdrawConfirm.value = true;
+};
+
+const withdrawFromCourse = async () => {
+  if (courseToWithdraw.value) {
+    try {
+      await userStore.withdraw(courseToWithdraw.value);
+      await store.loadCourses();
+      await userStore.loadRegisteredCourses();
+    } catch (error) {
+      console.error("Error withdrawing from course:", error);
+    }
   }
+  showWithdrawConfirm.value = false;
+  courseToWithdraw.value = null;
 };
 </script>
 
@@ -86,12 +97,12 @@ const withdrawFromCourse = async (courseId: string) => {
 
     <h2 class="text-xl font-semibold mb-2">Available Courses</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <CourseCard v-for="course in filteredCourses()" :key="course.code" :course="course" @register="confirmRegisterCourse" />
+      <CourseCard v-for="course in filteredCourses()" :key="course._id" :course="course" @register="confirmRegisterCourse" />
     </div>
 
     <h2 class="text-xl font-semibold mt-6 mb-2">Registered Courses</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <CourseCard v-for="course in userStore.registeredCourses" :key="course.code" :course="course" @withdraw="withdrawFromCourse" />
+      <CourseCard v-for="course in userStore.registeredCourses" :key="course._id" :course="course" @withdraw="confirmWithdrawCourse" />
     </div>
     
     <h2 class="text-xl font-semibold mt-6 mb-2">Weekly Schedule</h2>
@@ -107,6 +118,21 @@ const withdrawFromCourse = async (courseId: string) => {
         <div class="flex justify-end gap-4 mt-4">
           <button @click="showRegisterConfirm = false" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>
           <button @click="registerForCourse" class="bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-500">Register</button>
+        </div>
+      </div>
+    </div>
+  </Teleport>
+
+  <!-- Withdraw Confirmation Modal -->
+  <Teleport to="body">
+    <div v-if="showWithdrawConfirm" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 z-50">
+      <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-lg font-semibold text-red-600">Confirm Withdrawal</h2>
+        <p class="mt-2 text-gray-700">Are you sure you want to withdraw from this course?</p>
+        <p class="text-red-600 mt-2">This action cannot be undone.</p>
+        <div class="flex justify-end gap-4 mt-4">
+          <button @click="showWithdrawConfirm = false" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>
+          <button @click="withdrawFromCourse" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Withdraw</button>
         </div>
       </div>
     </div>

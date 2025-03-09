@@ -1,4 +1,3 @@
-<!-- AdminDashboard.vue -->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useCourseStore } from '@/store/courses';
@@ -128,11 +127,12 @@ const deleteCourse = async () => {
     <Teleport to="body">
       <div v-if="showDeleteConfirm" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
         <div class="bg-white p-6 rounded-lg shadow-lg">
-          <h2 class="text-lg font-semibold">Confirm Delete</h2>
-          <p class="mt-2">Are you sure you want to delete this course?</p>
+          <h2 class="text-lg font-semibold text-red-600">Confirm Delete</h2>
+          <p class="mt-2 text-gray-700">Are you sure you want to delete this course?</p>
+          <p class="text-red-600 mt-2">This action cannot be undone.</p>
           <div class="flex justify-end gap-4 mt-4">
             <button @click="showDeleteConfirm = false" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>
-            <button @click="deleteCourse" class="bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-500">Delete</button>
+            <button @click="deleteCourse" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Delete</button>
           </div>
         </div>
       </div>

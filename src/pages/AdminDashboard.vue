@@ -118,7 +118,7 @@ const deleteCourse = async () => {
         placeholder="Search courses..." 
         class="w-full p-2 border border-gray-300 rounded-lg"
       />
-      <button @click="addCourse" class="ml-4 px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 whitespace-nowrap">Add Course</button>
+      <button @click="addCourse" class="ml-4 px-3 py-1 bg-orange-400 text-white rounded hover:bg-orange-500 whitespace-nowrap">Add Course</button>
     </div>
 
     <!-- Course Form Modal -->

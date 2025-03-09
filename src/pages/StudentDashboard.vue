@@ -106,7 +106,7 @@ const withdrawFromCourse = async (courseId: string) => {
         <p class="mt-2">Are you sure you want to register for this course?</p>
         <div class="flex justify-end gap-4 mt-4">
           <button @click="showRegisterConfirm = false" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>
-          <button @click="registerForCourse" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Register</button>
+          <button @click="registerForCourse" class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">Register</button>
         </div>
       </div>
     </div>

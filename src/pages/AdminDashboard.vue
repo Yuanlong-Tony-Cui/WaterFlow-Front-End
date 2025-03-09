@@ -61,6 +61,8 @@ const addCourse = () => {
     startDate: '',
     endDate: '',
     schedule: [],
+    makeupLectures: [],
+    noClassDates: [],
     capacity: 0,
     registeredStudents: []
   };
@@ -74,10 +76,19 @@ const closeForm = () => {
 
 const saveCourse = async (updatedCourse: Course) => {
   try {
-    await store.editCourse(updatedCourse._id, updatedCourse);
-    await store.loadCourses(); // Reload courses after update
+    // Check whether updatedCourse has an _id; if empty, it's a new course
+    if (!updatedCourse._id) {
+      // Create a brand new course
+      console.log("saveCourse() Adding new course:", updatedCourse);
+      await store.addCourse(updatedCourse);
+    } else {
+      // Update existing course
+      await store.editCourse(updatedCourse._id, updatedCourse);
+    }
+    // Reload courses after add or update
+    await store.loadCourses();
   } catch (error) {
-    console.error("Error updating course:", error);
+    console.error("Error saving course:", error);
   }
   closeForm();
 };
@@ -103,7 +114,7 @@ const deleteCourse = async () => {
 
 <template>
   <div>
-    <h1 class="text-2xl font-semibold mb-4">Course Management</h1>
+    <h1 class="text-2xl font-semibold mb-4">Admin Dashboard</h1>
     <div class="flex justify-between mb-4">
       <input 
         v-model="searchQuery" 

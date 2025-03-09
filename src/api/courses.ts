@@ -13,7 +13,8 @@ export async function fetchCourses(): Promise<Course[]> {
 
 // Create a new course (Admin)
 export async function createCourse(course: Course): Promise<Course> {
-  const { data } = await axios.post(ADMIN_API_URL, course);
+  const { _id, ...courseData } = course;
+  const { data } = await axios.post(ADMIN_API_URL, courseData);
   return data;
 }
 

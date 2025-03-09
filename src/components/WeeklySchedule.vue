@@ -6,13 +6,28 @@ const props = defineProps<{ courses: Course[] }>();
 const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const selectedWeek = ref<string>("2024-09-09"); // default week of interest
 
-// Define 6 distinct colours
-const courseColours = ["bg-blue-200", "bg-green-200", "bg-yellow-200", "bg-purple-200", "bg-pink-200", "bg-orange-200"];
+// Define 8 distinct colors for courses
+const courseColors = [
+  "bg-blue-200", "bg-green-200", "bg-yellow-200", "bg-purple-200",
+  "bg-pink-200", "bg-orange-200", "bg-teal-200", "bg-red-200"
+];
 
-// Function to get a color index for a course (hashing _id)
-const getCourseColour = (courseId: string) => {
-  const hash = [...courseId].reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  return courseColours[hash % courseColours.length]; // Map to one of the 6 colors
+const assignedColors = new Map<string, string>(); // Store assigned colors
+
+// Function to assign a unique color to each course
+const getCourseColor = (courseId: string): string => {
+  if (assignedColors.has(courseId)) {
+    return assignedColors.get(courseId)!;
+  }
+
+  // Assign a unique color from the pool
+  const usedColors = Array.from(assignedColors.values());
+  const availableColors = courseColors.filter(color => !usedColors.includes(color));
+
+  let color = availableColors.length > 0 ? availableColors[0] : courseColors[assignedColors.size % courseColors.length];
+
+  assignedColors.set(courseId, color);
+  return color;
 };
 
 // Filter courses that are active in the selected week
@@ -27,7 +42,7 @@ const filteredCourses = computed(() => {
 
 // Group courses by day
 const schedule = computed(() => {
-  const result: Record<string, { name: string; startTime: string; endTime: string; colour: string }[]> = {};
+  const result: Record<string, { name: string; startTime: string; endTime: string; color: string }[]> = {};
   daysOfWeek.forEach(day => (result[day] = []));
 
   filteredCourses.value.forEach(course => {
@@ -37,7 +52,7 @@ const schedule = computed(() => {
           name: course.name,
           startTime: session.startTime,
           endTime: session.endTime,
-          colour: getCourseColour(course._id), // Assign color dynamically
+          color: getCourseColor(course._id), // assigns colour dynamically
         });
       }
     });
@@ -56,7 +71,12 @@ const schedule = computed(() => {
     <div class="grid grid-cols-7 gap-2 p-4 border border-gray-300 rounded-lg">
       <div v-for="day in daysOfWeek" :key="day" class="border p-2 rounded-md bg-gray-100 min-h-[100px]">
         <h3 class="text-center font-bold text-gray-700">{{ day }}</h3>
-        <div v-for="session in schedule[day]" :key="session.startTime" class="mt-2 p-2 bg-green-200 text-green-900 rounded text-center">
+        <div 
+          v-for="session in schedule[day]" 
+          :key="session.startTime" 
+          class="mt-2 p-2 text-gray-900 rounded text-center"
+          :class="session.color" 
+        >
           <p class="text-sm font-semibold">{{ session.name }}</p>
           <p class="text-xs">{{ session.startTime }} - {{ session.endTime }}</p>
         </div>

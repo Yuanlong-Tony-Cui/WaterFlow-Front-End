@@ -36,7 +36,6 @@ const formatDate = (dateStr?: string) => {
 };
 
 const editCourse = (course: Course) => {
-  console.log("editCourse() Editing course:", course);
   selectedCourse.value = {
     ...course,
     startDate: formatDate(course.startDate),
@@ -76,13 +75,11 @@ const closeForm = () => {
 
 const saveCourse = async (updatedCourse: Course) => {
   try {
-    // Check whether updatedCourse has an _id; if empty, it's a new course
     if (!updatedCourse._id) {
-      // Create a brand new course
-      console.log("saveCourse() Adding new course:", updatedCourse);
+      // Create a new course
       await store.addCourse(updatedCourse);
     } else {
-      // Update existing course
+      // Update an existing course
       await store.editCourse(updatedCourse._id, updatedCourse);
     }
     // Reload courses after add or update
@@ -93,8 +90,8 @@ const saveCourse = async (updatedCourse: Course) => {
   closeForm();
 };
 
-const confirmDeleteCourse = (courseCode: string) => {
-  courseToDelete.value = courseCode;
+const confirmDeleteCourse = (courseId: string) => {
+  courseToDelete.value = courseId;
   showDeleteConfirm.value = true;
 };
 
@@ -142,7 +139,7 @@ const deleteCourse = async () => {
     </Teleport>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <CourseCard v-for="course in filteredCourses()" :key="course.code" :course="course" @edit="editCourse" @delete="confirmDeleteCourse" />
+      <CourseCard v-for="course in filteredCourses()" :key="course._id" :course="course" @edit="editCourse" @delete="confirmDeleteCourse" />
     </div>
   </div>
 </template>

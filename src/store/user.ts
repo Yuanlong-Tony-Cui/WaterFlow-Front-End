@@ -22,7 +22,6 @@ export const useUserStore = defineStore('userStore', () => {
         if (!user.value) return;
         try {
             const data = await fetchRegisteredCourses(user.value._id);
-            console.log("Registered courses:", data);
             registeredCourses.value = data;
         } catch (error) {
             console.error("Error fetching registered courses:", error);

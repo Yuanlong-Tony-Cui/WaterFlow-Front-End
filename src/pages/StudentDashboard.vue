@@ -42,7 +42,6 @@ const confirmRegisterCourse = (courseId: string) => {
 };
 
 const registerForCourse = async () => {
-  console.log("registerForCourse() Registering for course:", courseToRegister.value);
   if (courseToRegister.value) {
     try {
       const response = await userStore.register(courseToRegister.value);

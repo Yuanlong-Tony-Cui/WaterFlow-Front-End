@@ -7,12 +7,10 @@ export const useCourseStore = defineStore('courseStore', () => {
     const courses = ref<Course[]>([]);
 
     async function loadCourses() {
-        console.log('loadCourses');
         courses.value = await fetchCourses();
     }
 
     async function addCourse(course: Course) {
-        console.log('addCourse() called');
         const newCourse = await createCourse(course);
         courses.value.push(newCourse);
     }
@@ -31,13 +29,11 @@ export const useCourseStore = defineStore('courseStore', () => {
     }
 
     async function registerForCourse(courseId: string, studentId: string) {
-        console.log(`Registering student ${studentId} for course ${courseId}`);
         await registerCourse(courseId, studentId);
         await loadCourses(); // refreshes course list
     }
 
     async function withdrawFromCourse(courseId: string, studentId: string) {
-        console.log(`Withdrawing student ${studentId} from course ${courseId}`);
         await withdrawCourse(courseId, studentId);
         await loadCourses(); // refreshes course list
     }

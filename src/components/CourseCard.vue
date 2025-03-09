@@ -22,7 +22,7 @@ const isRegistered = computed(() => userStore.registeredCourses.some(c => c._id 
       <button v-if="$route.path.includes('admin')" class="text-white py-1 px-3 rounded bg-green-600 hover:bg-green-700" @click="emit('edit', course)">
         Edit
       </button>
-      <button v-if="$route.path.includes('admin')" class="bg-red-600 text-white py-1 px-3 rounded hover:bg-red-700" @click="emit('delete', course.code)">
+      <button v-if="$route.path.includes('admin')" class="bg-red-600 text-white py-1 px-3 rounded hover:bg-red-700" @click="emit('delete', course._id)">
         Delete
       </button>
 

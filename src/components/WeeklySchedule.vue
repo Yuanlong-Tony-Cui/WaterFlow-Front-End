@@ -9,7 +9,7 @@ const selectedWeek = ref<string>("2024-09-09"); // default week of interest
 // Define 8 distinct colors for courses
 const courseColors = [
   "bg-blue-200", "bg-green-200", "bg-yellow-200", "bg-purple-200",
-  "bg-pink-200", "bg-orange-200", "bg-teal-200", "bg-red-200"
+  "bg-pink-200", "bg-blue-200", "bg-teal-200", "bg-red-200"
 ];
 
 const assignedColors = new Map<string, string>(); // Store assigned colors

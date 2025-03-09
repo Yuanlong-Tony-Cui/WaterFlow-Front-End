@@ -115,10 +115,10 @@ const deleteCourse = async () => {
     <div class="flex justify-between mb-4">
       <input 
         v-model="searchQuery" 
-        placeholder="Search courses..." 
+        placeholder="Search courses" 
         class="w-full p-2 border border-gray-300 rounded-lg"
       />
-      <button @click="addCourse" class="ml-4 px-3 py-1 bg-orange-400 text-white rounded hover:bg-orange-500 whitespace-nowrap">Add Course</button>
+      <button @click="addCourse" class="ml-4 px-3 py-1 bg-blue-400 text-white rounded hover:bg-blue-500 whitespace-nowrap">Add Course</button>
     </div>
 
     <!-- Course Form Modal -->
@@ -132,7 +132,7 @@ const deleteCourse = async () => {
           <p class="mt-2">Are you sure you want to delete this course?</p>
           <div class="flex justify-end gap-4 mt-4">
             <button @click="showDeleteConfirm = false" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>
-            <button @click="deleteCourse" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Delete</button>
+            <button @click="deleteCourse" class="bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-500">Delete</button>
           </div>
         </div>
       </div>

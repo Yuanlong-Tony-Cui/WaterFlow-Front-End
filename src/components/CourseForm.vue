@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineEmits, defineProps, watch } from 'vue';
+import { ref, watch } from 'vue';
 import type { Course } from '@/types/course';
 
 const emit = defineEmits(['save', 'close']);
@@ -48,26 +48,28 @@ const closeModal = () => {
   isVisible.value = false;
   emit('close');
 };
-
-// Ensure schedule is always an array before adding new entries
-const addSchedule = () => {
-  if (!form.value.schedule) {
-    form.value.schedule = [];
-  }
-  form.value.schedule.push({ day: '', startTime: '', endTime: '' });
-};
 </script>
 
 <template>
   <Teleport to="body">
+
+    <!-- Backdrop -->
     <div v-if="isVisible" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 z-50 overflow-auto">
-      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg border-2 border-blue-500 relative max-h-[90vh] overflow-y-auto scrollbar-left">
-        <!-- Close Button -->
-        <button @click="closeModal" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-lg">
+
+      <!-- Scrollable Form -->
+      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg border-2 border-blue-500 relative max-h-[90vh] overflow-y-auto">
+
+        <!-- Close -->
+        <button @click="closeModal" class="absolute top-3 right-6 text-gray-600 hover:text-gray-900 text-lg">
           ✖
         </button>
 
-        <h2 class="text-lg font-semibold mb-4 text-blue-800">{{ props.course?._id ? 'Edit Course' : 'Add Course' }}</h2>
+        <!-- Form Title -->
+        <h2 class="text-lg font-semibold mt-2 mb-4 text-blue-800">
+          {{ props.course?._id ? 'Edit Course' : 'Add Course' }}
+        </h2>
+
+        <!-- Form Fields -->
         <div class="grid grid-cols-1 gap-4">
           <div>
             <label class="block font-medium text-blue-800">Course Code:</label>
@@ -116,7 +118,10 @@ const addSchedule = () => {
               <input type="time" v-model="lecture.startTime" class="w-1/3 p-2 border border-blue-300 rounded-lg" />
               <input type="time" v-model="lecture.endTime" class="w-1/3 p-2 border border-blue-300 rounded-lg" />
             </div>
-            <button @click="form.makeupLectures?.push({ date: '', startTime: '', endTime: '' })" class="mt-2 bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-500">Add Makeup Lecture</button>
+            <button @click="form.makeupLectures?.push({ date: '', startTime: '', endTime: '' })"
+              class="mt-2 bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-500">
+              Add Makeup Lecture
+            </button>
           </div>
 
           <div>
@@ -128,15 +133,21 @@ const addSchedule = () => {
             <label class="block font-medium text-blue-800">Schedule:</label>
             <div v-for="(session, index) in form.schedule" :key="index" class="flex gap-2">
               <select v-model="session.day" class="w-1/3 p-2 border border-blue-300 rounded-lg">
-                <option v-for="day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']" :key="day" :value="day">{{ day }}</option>
+                <option v-for="day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']" :key="day" :value="day">
+                  {{ day }}
+                </option>
               </select>
               <input type="time" v-model="session.startTime" class="w-1/3 p-2 border border-blue-300 rounded-lg" />
               <input type="time" v-model="session.endTime" class="w-1/3 p-2 border border-blue-300 rounded-lg" />
             </div>
-            <button @click="form.schedule.push({ day: '', startTime: '', endTime: '' })" class="mt-2 bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-500">Add Schedule</button>
+            <button @click="form.schedule.push({ day: '', startTime: '', endTime: '' })"
+              class="mt-2 bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-500">
+              Add Schedule
+            </button>
           </div>
         </div>
 
+        <!-- Cancel / Save -->
         <div class="flex justify-end gap-2 mt-6">
           <button @click="closeModal" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>
           <button @click="handleSubmit" class="bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-500">Save</button>
@@ -145,27 +156,3 @@ const addSchedule = () => {
     </div>
   </Teleport>
 </template>
-
-<style>
-.scrollbar-left::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.scrollbar-left::-webkit-scrollbar-thumb {
-  background-color: #A0A0A0;
-  border-radius: 4px;
-}
-
-.scrollbar-left::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-.scrollbar-left {
-  direction: rtl;
-}
-
-.scrollbar-left > * {
-  direction: ltr;
-}
-</style>

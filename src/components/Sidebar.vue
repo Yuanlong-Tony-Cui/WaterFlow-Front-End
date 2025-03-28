@@ -1,12 +1,3 @@
-<script setup lang="ts">
-import { HomeIcon, BookOpenIcon } from 'lucide-vue-next';
-
-const menuItems = [
-  { name: 'Dashboard', icon: HomeIcon, route: '/admin' },
-  { name: 'Courses', icon: BookOpenIcon, route: '/admin/courses' }
-];
-</script>
-
 <template>
   <div class="h-screen w-64 bg-gray-800 text-white p-4 fixed">
     <h1 class="text-lg font-semibold mb-4">WaterFlow</h1>
@@ -24,6 +15,6 @@ const menuItems = [
 
 <style scoped>
 a {
-  transition: background-color 0.3s;
+  transition: background-color 0.2s;
 }
 </style>

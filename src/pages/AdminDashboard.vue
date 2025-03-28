@@ -109,7 +109,7 @@ const deleteCourse = async () => {
 </script>
 
 <template>
-  <div>
+  <div class="mb-10">
     <h1 class="text-2xl font-semibold mb-4">Admin Dashboard</h1>
     <div class="flex justify-between mb-4">
       <input 

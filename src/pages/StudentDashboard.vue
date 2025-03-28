@@ -85,8 +85,10 @@ const withdrawFromCourse = async () => {
 </script>
 
 <template>
-  <div>
+  <div class="mb-10">
     <h1 class="text-2xl font-semibold mb-4">Student Dashboard</h1>
+
+    <!-- Search Bar -->
     <div class="flex justify-between mb-4">
       <input 
         v-model="searchQuery" 
@@ -95,6 +97,7 @@ const withdrawFromCourse = async () => {
       />
     </div>
 
+    <!-- Courses -->
     <h2 class="text-xl font-semibold mb-2">Available Courses</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <CourseCard v-for="course in filteredCourses()" :key="course._id" :course="course" @register="confirmRegisterCourse" />
@@ -105,6 +108,7 @@ const withdrawFromCourse = async () => {
       <CourseCard v-for="course in userStore.registeredCourses" :key="course._id" :course="course" @withdraw="confirmWithdrawCourse" />
     </div>
     
+    <!-- Weekly Schedule -->
     <h2 class="text-xl font-semibold mt-6 mb-2">Weekly Schedule</h2>
     <WeeklySchedule :courses="userStore.registeredCourses" />
   </div>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Course } from '@/types/course';
-import { defineProps, defineEmits, computed } from 'vue';
+import { computed } from 'vue';
 import { useUserStore } from '@/store/user';
 
 const props = defineProps<{ course: Course }>();
@@ -12,21 +12,26 @@ const isRegistered = computed(() => userStore.registeredCourses.some(c => c._id 
 
 <template>
   <div class="bg-white shadow-lg rounded-lg p-4 border border-gray-200">
+
+    <!-- Course Overview -->
     <h2 class="text-lg font-semibold text-blue-900">{{ course.name }}</h2>
     <p class="text-gray-600 font-medium">{{ course.code }}</p>
     <p class="text-sm text-gray-500">Instructor: {{ course.instructor }}</p>
     <p class="text-sm text-gray-700 mt-2 h-20 overflow-y-auto">{{ course.description }}</p>
 
     <div class="flex justify-between mt-4">
-      <!-- Admin Actions -->
+
+      <!-- Admin: Edit -->
       <button v-if="$route.path.includes('admin')" class="text-white py-1 px-3 rounded bg-blue-400 hover:bg-blue-500" @click="emit('edit', course)">
         Edit
       </button>
+
+      <!-- Admin: Delete -->
       <button v-if="$route.path.includes('admin')" class="bg-blue-400 text-white py-1 px-3 rounded hover:bg-blue-500" @click="emit('delete', course._id)">
         Delete
       </button>
 
-      <!-- Student Actions -->
+      <!-- Student: Register -->
       <button v-if="$route.path.includes('student')"
         :disabled="isRegistered || (course.registeredStudents && course.registeredStudents.length >= course.capacity)"
         class="py-1 px-3 rounded text-white transition-colors"
@@ -39,6 +44,7 @@ const isRegistered = computed(() => userStore.registeredCourses.some(c => c._id 
         Register
       </button>
 
+      <!-- Student: Withdraw -->
       <button v-if="$route.path.includes('student')"
         :disabled="!isRegistered"
         class="py-1 px-3 rounded text-white transition-colors"

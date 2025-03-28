@@ -82,8 +82,9 @@ const schedule = computed(() => {
     <div class="grid grid-cols-7 gap-2 p-4 border border-gray-300 rounded-lg">
       <div v-for="day in daysOfWeek" :key="day" class="border p-2 rounded-md bg-gray-100 min-h-[100px]">
         <h3 class="text-center font-bold text-gray-700">{{ day }}</h3>
-        <div 
-          v-for="session in schedule[day]" 
+
+        <!-- Sessions by `day` -->
+        <div v-for="session in schedule[day]" 
           :key="session.startTime" 
           class="mt-2 p-2 text-gray-900 rounded text-center shadow-md"
           :class="session.color" 
@@ -91,6 +92,7 @@ const schedule = computed(() => {
           <p class="text-sm font-semibold">{{ session.name }}</p>
           <p class="text-xs">{{ session.startTime }} - {{ session.endTime }}</p>
         </div>
+
       </div>
     </div>
   </div>

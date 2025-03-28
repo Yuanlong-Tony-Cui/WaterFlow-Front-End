@@ -111,6 +111,8 @@ const deleteCourse = async () => {
 <template>
   <div class="mb-10">
     <h1 class="text-2xl font-semibold mb-4">Admin Dashboard</h1>
+
+    <!-- Search Bar -->
     <div class="flex justify-between mb-4">
       <input 
         v-model="searchQuery" 
@@ -138,6 +140,7 @@ const deleteCourse = async () => {
       </div>
     </Teleport>
 
+    <!-- Courses -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <CourseCard v-for="course in filteredCourses()" :key="course._id" :course="course" @edit="editCourse" @delete="confirmDeleteCourse" />
     </div>
